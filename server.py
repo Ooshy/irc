@@ -1,20 +1,28 @@
 import os
 import uuid
-from flask import Flask, session
+import psycopg2, psycopg2.extras
+from flask import Flask, session, render_template
 from flask.ext.socketio import SocketIO, emit
 
 app = Flask(__name__, static_url_path='')
-app.config['SECRET_KEY'] = 'secret!'
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 socketio = SocketIO(app)
 
 messages = [{'text':'test', 'name':'testName'}]
 users = {}
 
+def connectToDB():
+  connectionString = 'dbname=irc user=postgres password=postgres host=localhost'
+  try:
+    return psycopg2.connect(connectionString)
+  except:
+    print("Can't connect to database")
+
 def updateRoster():
     names = []
     for user_id in  users:
-        print users[user_id]['username']
+        print user_id['username']
         if len(users[user_id]['username'])==0:
             names.append('Anonymous')
         else:
@@ -41,6 +49,7 @@ def new_message(message):
     #tmp = {'text':message, 'name':'testName'}
     tmp = {'text':message, 'name':users[session['uuid']]['username']}
     messages.append(tmp)
+    
     emit('message', tmp, broadcast=True)
     
 @socketio.on('identify', namespace='/chat')
@@ -51,10 +60,20 @@ def on_identify(message):
 
 
 @socketio.on('login', namespace='/chat')
-def on_login(pw):
-    print 'login '  + pw
-    #users[session['uuid']]={'username':message}
-    #updateRoster()
+def on_login(scope):
+    print 'omg lol'
+    print 'login '  + scope.password
+    
+    conn = connectToDB()
+    cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+    login_query = "select * from users where username = %s AND password = crypt(%s)"
+    cur.execute(login_query, (scope.name2, scope.password))
+    result = cur.fetchone()
+    if result:
+        users[session['uuid']]={'username':"tyrone"}
+        session['username'] = scope.name
+        updateRoster()
+        print("it worked somehow")
 
 
     
@@ -69,7 +88,8 @@ def on_disconnect():
 def hello_world():
     print 'in hello world'
     return app.send_static_file('index.html')
-    return 'Hello World!'
+    #return render_template('index.html')
+
 
 @app.route('/js/<path:path>')
 def static_proxy_js(path):
