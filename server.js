@@ -36,6 +36,16 @@ io.on('connection', function (socket) {
       updateRoster();
     });
 
+
+    socket.on('search', function (search) {
+      var text = String(search || '');
+      
+      if (!text)
+        return;
+      
+      socket.emit('search', text);
+      
+    });
     socket.on('message', function (msg) {
       var text = String(msg || '');
 
@@ -51,6 +61,8 @@ io.on('connection', function (socket) {
         broadcast('message', data);
         messages.push(data);
       });
+      
+      
     });
 
     socket.on('identify', function (name) {
