@@ -36,16 +36,19 @@ io.on('connection', function (socket) {
       updateRoster();
     });
 
-
-    socket.on('search', function (search) {
-      var text = String(search || '');
+    socket.on('relogin', function (bagel) {
+      login('show');  
+    
+    }
+    // socket.on('search', function (search) {
+    //   var text = String(search || '');
       
-      if (!text)
-        return;
+    //   if (!text)
+    //     return;
       
-      socket.emit('search', text);
+    //   socket.emit('search', text);
       
-    });
+    // });
     socket.on('message', function (msg) {
       var text = String(msg || '');
 

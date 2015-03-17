@@ -59,7 +59,7 @@ def test_connect():
 
 @socketio.on('message', namespace='/chat')
 def new_message(message):
-    #tmp = {'text':message, 'name':'testName'}
+
     tmp = {'text':message, 'name':users[session['uuid']]['username']}
     messages.append(tmp)
     conn = connectToDB()
@@ -94,9 +94,6 @@ def on_search(search):
         
 @socketio.on('login', namespace='/chat')
 def on_login(data):
-    print 'omg lol'
-    print 'login '  + data['password']
-  
     
     conn = connectToDB()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -110,7 +107,7 @@ def on_login(data):
         print 'successful login'
         updateRoster()
 
-
+    
     
 @socketio.on('disconnect', namespace='/chat')
 def on_disconnect():

@@ -104,7 +104,7 @@ if(showhide == "show"){
       }
     </script>
   </head>
-  <body onload="javascript:login('show')">
+  <body onload="javascript:login('show')" style="background-color: #FEF0DB;">
     
 
     
@@ -115,15 +115,20 @@ if(showhide == "show"){
     <div class="container" ng-controller="ChatController">
       
       
-          <div id="popupbox"> 
-<form ng-submit="processLogin()">
-<center>Username:</center>
-<center><input type="text"  ng-model="name2" ng-change="setName2()" placeholder="Username" size="14" name= "username"/></center>
-<center>Password:</center>
-<center><input  ng-model="password" type="password" size="14" name="password" /></center>
-<center><input type="submit" class="span1 btn btn-primary" value="Send" ng-disabled="!password"></center>
-
-</form>
+      <div id="popupbox" class="text-center"> 
+        <form ng-submit="processLogin()">
+          <center>Username:</center>
+          <center><input type="text"  ng-model="name2" ng-change="setName2()" placeholder="Username" size="14" name= "username"/></center>
+          <center>Password:</center>
+          <center><input  ng-model="password" type="password" size="14" name="password" /></center>
+          <center><input type="submit" class="span1 btn btn-primary" value="Send" ng-disabled="!password"></center>
+        </form> 
+      </div>
+      
+      
+      
+      
+          
 <br />
 
 </div> 
@@ -144,7 +149,7 @@ if(showhide == "show"){
         </div>
       </div>
       <div class="page-header">
-        <h1>Chat Example</h1>
+        <h1>Shaniqua Chat</h1>
       </div>
       <div class="row">
         <div class="span3">
