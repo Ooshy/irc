@@ -27,6 +27,7 @@
           $scope.messages.push(msg);
           $scope.$apply();
         });
+        
 
         socket.on('roster', function (names) {
           $scope.roster = names;
